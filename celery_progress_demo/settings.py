@@ -97,10 +97,10 @@ WSGI_APPLICATION = 'celery_progress_demo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd1nohv98gtu71m',
-        'USER': 'vpqzxzqrhocxol',
-        'PASSWORD': 'c5221511d8e926476309921e584332101e567c91bd5552574dc52603c3bd21c9',
-        'HOST': 'ec2-3-223-39-179.compute-1.amazonaws.com',
+        'NAME': 'dbn8op09vmsjrc',
+        'USER': 'bpbhwupgzdatte',
+        'PASSWORD': '3d7504aa6ac548b4da1ec1f038a1e2038a78be624c12de8211d9605594071a57',
+        'HOST': 'ec2-18-234-17-166.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
