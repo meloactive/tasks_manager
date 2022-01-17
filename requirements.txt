@@ -1,3 +1,4 @@
+psycopg2-binary
 bezier
 gunicorn
 django_celery_beat
