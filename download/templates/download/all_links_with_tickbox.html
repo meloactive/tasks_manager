@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<form method="post" action="get_all_urls_with_tickbox">
+  {% csrf_token %}
+  {% for link in links %}
+  <input type="checkbox" id="vehicle1" name="{{ link }}" value="{{ link }}">
+  <label for="subscribeNews">{{ link }}</label>
+  <br>
+  {% endfor %}
+  <input type="submit" value="Submit">
+</form>
+
+<p>Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</p>
+
+</body>
+</html>

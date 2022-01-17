@@ -1,0 +1,7 @@
+echo "# tasks_manager" >> README.md
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/meloactive/tasks_manager.git
+git push -u origin main

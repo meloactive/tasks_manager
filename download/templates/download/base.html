@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'download/css/bootstrap.css' %}"/>
+    </head>
+<body>
+    <nav class="navbar navbar-default" style="background-color: #28a4c9;text-align: center;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="text-align: center;" href="https://itsourcecode.com">Melo's Task</a>
+        </div>
+    </nav>
+    <div class="col-md-3"></div>
+    <div class="col-md-6 well">
+        <h3 class="text-primary">Task Manager : Earn From Tasks</h3>
+        <hr style="border-top:1px dotted #000;"/>
+        {% block body %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

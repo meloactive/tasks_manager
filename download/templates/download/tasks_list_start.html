@@ -1,0 +1,43 @@
+{% extends 'download/base.html' %}
+
+
+{% block body %}
+<!-- all ids with scrollable select -->
+<!-- open a box for inputs -->
+<!--  a button with post request -->
+
+
+
+<table class="table table-bordered">
+    <thead class="alert-info">
+        <tr>
+            <th>#</th>
+            <th>Task ID</th>
+            <th>Full Task ID</th>
+            <th>User Inputs</th>
+            <th>Status</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in full_tasks %}
+        <tr>
+            <td>{{ member.id }}
+                <form action="start_task" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="full_task_id" class="form-control" style="width:30%;display: none" value='{{ member.task_id }}' />
+                    <button type="submit">Start Task</button>
+                </form>
+            </td>
+            <td>{{ member.task_id }}</td>
+            <td>{{ member.full_task_id }}</td>
+            <td>{{ member.user_inputs }}</td>
+            <td>{{ member.status }}</td>
+            
+            <td><center><a class="btn btn-sm btn-warning" href="delete_tasks/{{ member.id }}"><span class="glyphicon glyphicon-edit"></span> Start Task</a> <a class="btn btn-sm btn-danger" href="delete_full_tasks_id/{{ member.id }}"><span class="glyphicon glyphicon-trash"></span> Remove</a></center></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'download/base.html' %}
+
+{% block body %}
+<form class="form-inline"  action='insert_all_tasks_with_id' method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="task_id">Task ID</label>
+        <input type="text" name="task_id" class="form-control" style="width:30%;" required="required"/>
+        <label for="description">Description</label>
+        <input type="text" name="description" class="form-control" style="width:30%;" required="required"/>
+        <label for="extra_values">Extra Values</label>
+        <input type="text" name="extra_values" class="form-control" style="width:30%;" required="required"/>
+        <button type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> ADD</button>
+    </div>
+</form>
+
+
+<table class="table table-bordered">
+    <thead class="alert-info">
+        <tr>
+            <th>#</th>
+            <th>Task ID</th>
+            <th>Description</th>
+            <th>Extra Values</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+        <tr>
+            <td>{{ member.id }}
+                <form action="code_runner" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="id" class="form-control" style="width:30%;display: none" value='{{ member.id }}' />
+                    <button type="submit">Call</button>
+                </form>
+            </td>
+            <td>{{ member.task_id }}</td>
+            <td>{{ member.description }}</td>
+            <td>{{ member.extra_values }}</td>
+            
+            <td><center><a class="btn btn-sm btn-warning" href="delete_tasks/{{ member.task_id }}"><span class="glyphicon glyphicon-edit"></span> Update</a> <a class="btn btn-sm btn-danger" href="delete_tasks/{{ member.id }}"><span class="glyphicon glyphicon-trash"></span> Remove</a></center></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

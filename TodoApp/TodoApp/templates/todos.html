@@ -1,0 +1,73 @@
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<head>
+    <title> TodoApp </title>
+    <link rel="stylesheet" href="../static/css/sheetTodos.css">
+    <link rel="icon" type="image/png" href="../static/icon.png">
+</head>
+
+{% csrf_token %}
+
+<div id="header">
+    <span style="float: left; width: 34%; text-align: left;">
+        <a href="/" class="btn btn-primary" style="margin-left: 10px; margin-top: 10px">Return to your TodoLists</a>
+    </span>
+    <p style="float: left; width: 33%; text-align: center;"> MIT © 2019 ysyesilyurt <a href="https://github.com/ysyesilyurt/TodoApp"> Original repository</a></p>
+    <p style="float: left; width: 33%; text-align: right;">
+        <span style="float:right; margin-right: 10px; margin-top: 5px">
+            {% if request.user.is_authenticated %}
+                Current User: {{ request.user }}
+                <br>
+                <a href="/accounts/logout?next=/" class="btn btn-danger" style="margin-left: 10px; margin-top: 10px">Logout</a>
+            {% endif %}
+        </span>
+    </p>
+</div>
+
+<div><h1 style="text-align: center">Todos of {{ listName }} List</h1></div>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="todolist not-done">
+             <h1>Todos</h1>
+                    <input type="text" class="form-control add-todo" placeholder="Add a new Todo">
+                    <button id="checkAll" class="btn btn-success">Mark all as done</button>
+                    <button id="deleteAll" class="btn btn-danger">Delete all undone items</button>
+                    <hr>
+                    <ul id="not-done-items" class="list-unstyled">
+                        {% for todo in todos %}
+                            <li class="ui-state-default"><div class="checkbox"><label for="addingTodo"><input type="checkbox" value="" />{{ todo.content }}</label>
+                            <span class="glyphicon glyphicon-align-justify" style='float: right;'></span>
+                            <button style="margin-right: 10px" class="btn btn-default btn-xs pull-right  edit-item"><span class="glyphicon glyphicon-edit"></span></button>
+                            </div></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="todo-footer">
+                        <strong><span class="count-todos"></span></strong> Items Left
+                    </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="todolist">
+             <h1>Already Done</h1>
+                <button id="uncheckAllDone" class="btn btn-warning">Mark all as undone</button>
+                <button id="deleteAllDone" class="btn btn-danger">Delete all done items</button>
+                <hr>
+                <ul id="done-items" class="list-unstyled">
+                    {% for todo in doneTodos %}
+                        <li>{{ todo.content }}<button class="btn btn-default btn-xs pull-right  remove-item"><span class="glyphicon glyphicon-remove"></span></button>
+                            <button class="btn btn-default btn-xs pull-right  undone-item"><span class="glyphicon glyphicon-share-alt"></span></button></li>
+                    {% endfor %}
+                </ul>
+                <div class="todo-footer">
+                        <strong><span class="count-doneTodos"></span></strong> Items are Done
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/js/todos.js"></script>

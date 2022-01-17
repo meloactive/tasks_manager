@@ -1,0 +1,49 @@
+Theme:
+    get user data, comment something, user notif - timer for getting back, maybe a browser to add new accounts on the net
+
+
+Tasks:
+
+    when a new ip comes keep that in db and session
+    generate a task for that particular user and save that item
+    get created tasks result in db
+    messaging option
+    create an android app to keep users also add messenger
+    admin panel with tasks list costs, profits
+    auto group posts for new tasks --- that should be later
+    
+
+
+steps:
+
+    create a page for posts -- api too
+        list of posts
+        create posts
+
+    user with session
+        create date with random value session token
+        save it in the db
+
+        user info --- ip, session_token
+
+    tasks list:
+        taken by user, outputs, task id , cost
+
+
+    contact system:
+        auto chat
+
+    
+
+
+users page:
+    list of tasks with price
+    submit task details
+admin pages:
+    list of tasks with status
+    list of users
+    
+
+
+
+docker run -d  --name aria2-pro  --restart unless-stopped  --log-opt max-size=1m  -e PUID=$UID  -e PGID=$GID  -e UMASK_SET=022    -e RPC_PORT=6800  -p 6800:6800  -e LISTEN_PORT=6888  -p 6888:6888  -p 6888:6888/udp  -v C:\Users\melo\aria2.conf:/config  -v C:\Users\melo\aria2-downloads:/downloads  p3terx/aria2-pro

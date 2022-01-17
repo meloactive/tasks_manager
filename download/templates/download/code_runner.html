@@ -1,0 +1,7 @@
+{% extends 'crud/base.html' %}
+{% block body %}
+<form action="{% url 'code_runner' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">{{ members.firstname }}</button>
+</form>
+{% endblock %}

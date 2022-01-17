@@ -1,0 +1,155 @@
+{% extends 'download/base.html' %}
+
+
+
+{% block body %}
+
+{% load static %}
+<div class="bg-dark text-white text-center">
+    <h1>Celery-Progress Demo</h1>
+    <p>Utilising NASA's <i>Astonomy Image of the Day</i> API</p> 
+</div>
+<a class="btn btn-sm btn-warning" href="delete_all"><span class="glyphicon glyphicon-edit"></span> Delete All</a>
+<div id="new"></div>
+{% for key, value in celery_task_ids.items %}
+<a id="progress-bar{{ key }}-urls" href=""></a>
+{%  endfor %}
+
+<div class="container-fluid">
+    <div class="row align-items-end">
+        {% for key, value in celery_task_ids.items %}
+            <div class="row">
+                <div class="text-center">
+                    <img id="progress-bar{{ key }}-image" src="" class="nasa-image">
+                </div>
+                <a id="progress-bar{{ key }}-image-link" href=""></a>
+                <div class='progress-wrapper'>
+                    <div id="progress-bar{{ key }}" class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+                </div>
+                <div id="progress-bar{{ key }}-message">Waiting for progress to start...</div>
+                <center><a class="btn btn-sm btn-warning" href="pause/{{ value }}"><span class="glyphicon glyphicon-edit"></span> pause</a> <a class="btn btn-sm btn-danger" href="resume/{{ value }}" ><span class="glyphicon glyphicon-trash"></span> Resume</a> <a class="btn btn-sm btn-danger" href="cancel/{{ value }}" ><span class="glyphicon glyphicon-trash"></span> Cancel</a> <a class="btn btn-sm btn-warning" href="remove/{{ value }}"><span class="glyphicon glyphicon-edit"></span> remove</a></center>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<form class="form-inline"  action="create" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="firstname">Firstname</label>
+        <input type="text" name="firstname" class="form-control" style="width:30%;" required="required"/>
+        <label for="lastname">Lastname</label>
+        <input type="text" name="lastname" class="form-control" style="width:30%;" required="required"/>
+        <label for="firstname">Email</label>
+        <input type="text" name="email" class="form-control" style="width:30%;" required="required"/>
+        <label for="lastname">Date Of Birth</label>
+        <input type="text" name="dob" class="form-control" style="width:30%;" required="required"/>
+        <label for="firstname">Phone Number</label>
+        <input type="text" name="phone_number" class="form-control" style="width:30%;" required="required"/>
+        <label for="lastname">Address</label>
+        <input type="text" name="address" class="form-control" style="width:30%;" required="required"/>
+        <label for="firstname">SSN</label>
+        <input type="text" name="ssn" class="form-control" style="width:30%;" required="required"/>
+        <label for="firstname">City</label>
+        <input type="text" name="city" class="form-control" style="width:30%;" required="required"/>
+        <label for="lastname">State</label>
+        <input type="text" name="state" class="form-control" style="width:30%;" required="required"/>
+        <label for="firstname">Password</label>
+        <input type="text" name="password" class="form-control" style="width:30%;" required="required"/>
+        <button type="submit" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span> ADD</button>
+    </div>
+</form>
+<br />
+
+
+
+<table class="table table-bordered">
+    <thead class="alert-info">
+        <tr>
+            <th>#</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+            <th>Date Of Birth</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+        <tr>
+            <td>{{ member.id }}
+                <form action="code_runner" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="id" class="form-control" style="width:30%;display: none" value='{{ member.id }}' />
+                    <button type="submit">Call</button>
+                </form>
+            </td>
+            <td>{{ member.task_id }}</td>
+            <td>{{ member.description }}</td>
+            <td>{{ member.progress }}</td>
+            <td>{{ member.finished }}</td>
+            
+            <td><center><a class="btn btn-sm btn-warning" href="pause_selenium_task/{{ member.task_id }}"><span class="glyphicon glyphicon-edit"></span> Update</a> <a class="btn btn-sm btn-danger" href="remove_task/{{ member.id }}"><span class="glyphicon glyphicon-trash"></span> Remove</a></center></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+<script>
+    function customProgress(progressBarElement, progressBarMessageElement, progress) {
+        barIdentifier = progressBarElement.id.substring(12)
+        
+        if(progress.current == 0 && progress.total == 100){
+            progressMessage = ""
+        } else {
+            if(progress.description && progress.description.url){
+                var nasaImageElement = document.getElementById(progressBarElement.id + "-image");
+                nasaImageElement.src = progress.description.url
+                var nasaImageLinkElement = document.getElementById(progressBarElement.id + "-image-link");
+                nasaImageLinkElement.href = progress.description.url
+                nasaImageLinkElement.innerHTML = progress.description.desc
+            }
+            
+            if(progress.description && progress.description.links){
+                var nasaImageLinkElement = document.getElementById(progressBarElement.id + "-urls");
+                nasaImageLinkElement.href = progress.description.links
+                nasaImageLinkElement.innerHTML = progress.description.links
+            }
+
+            taskNumber = parseInt(progress.current)
+            taskPercentage = taskNumber / progress.total * 100
+            // console.log(taskNumber + " " + taskPercentage)
+            // alert(taskNumber + " " + taskPercentage)
+            progressBarElement.style.backgroundColor = "#68a9ef"
+            progressBarElement.style.width = taskPercentage + "%"
+            progressBarMessageElement.className = "alert alert-info"
+            progressMessage = progress.description
+            // "Currently fetching image " + taskNumber + " of " + progress.total
+            
+        }
+
+        progressBarMessageElement.innerHTML = (
+            progressMessage
+        );
+    }
+</script>
+
+<script src="{% static 'celery_progress/celery_progress.js' %}"></script>
+
+{% for key, value in celery_task_ids.items %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var progressUrl = "{% url 'celery_progress:task_status' value %}";
+            console.log(progressUrl)
+            CeleryProgressBar.initProgressBar(progressUrl, {
+                onProgress: customProgress,
+                progressBarId: "progress-bar{{ key }}",
+                progressBarMessageId: "progress-bar{{ key }}-message"
+            });
+        });
+    </script>
+{% endfor %}
+{% endblock %}
