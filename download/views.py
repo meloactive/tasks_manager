@@ -428,6 +428,7 @@ def posts(request):
 
 def submit_tasks(request, id):
     member = Posts.objects.get(id=id)
+    # print(member)
     
     if request.method  == "POST":
         
@@ -435,7 +436,7 @@ def submit_tasks(request, id):
         user_id = get_user(request)
         tasks_submitted = All_Tasks(task_id=member.id, task_description=member.task_description, costs=member.cost, status='submitted', submitted_values=submitted_values, user_id=user_id)
         tasks_submitted.save()
-    return render(request, 'download/submit_task.html', { "members":member })
+    return render(request, 'download/submit_task.html', { "member":member })
 
 
 def admin_panel(request):
